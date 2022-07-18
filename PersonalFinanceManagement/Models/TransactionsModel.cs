@@ -1,15 +1,19 @@
-﻿namespace PFM.Backend.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PersonalFinanceManagement.Models
 {
     public class TransactionsModel
     {
-        public string Id { get; set; }
+        [Key]
+        public int Id { get; set; }
         public string BeneficiaryName { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public string Direction { get; set; }
-        public string Amount { get; set; }
+        public float Amount { get; set; }
         public string Description { get; set; }
         public string Currency { get; set; }
-        public string MCC { get; set; }
+        public int? MCC { get; set; } 
         public string Kind { get; set; }
     }
 }

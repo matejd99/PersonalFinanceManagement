@@ -1,11 +1,11 @@
 ﻿using CsvHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PFM.Backend.Models;
-using PFM.Backend.Services;
+using PersonalFinanceManagement.Models;
+using PersonalFinanceManagement.Services;
 using System.Globalization;
 
-namespace PFM.Backend.Controllers
+namespace PersonalFinanceManagement.Controllers
 {
     [Route("transactions")]
     [ApiController]

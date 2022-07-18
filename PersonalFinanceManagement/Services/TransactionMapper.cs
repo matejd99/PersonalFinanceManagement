@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration;
-using PFM.Backend.Models;
+using PersonalFinanceManagement.Models;
 
-namespace PFM.Backend.Services
+namespace PersonalFinanceManagement.Services
 {
     public class TransactionMapper : ClassMap<TransactionsModel>
     {
