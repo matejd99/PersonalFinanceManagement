@@ -15,5 +15,6 @@ namespace PersonalFinanceManagement.Models
         public string Currency { get; set; }
         public int? MCC { get; set; } 
         public string Kind { get; set; }
+        public CategoriesModel? categoriesModel { get; set; }
     }
 }
