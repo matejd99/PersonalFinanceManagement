@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  personalfinancemanagement:
+    image: ${DOCKER_REGISTRY-}personalfinancemanagement
+    build:
+      context: .
+      dockerfile: PersonalFinanceManagement/Dockerfile

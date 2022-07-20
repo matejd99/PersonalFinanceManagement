@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using PersonalFinanceManagement.Data;
+using PersonalFinanceManagement.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
+builder.Services.AddDbContext<PFMDbContext>(
+        options => options.UseSqlServer(connection));
+
+builder.Services.AddScoped<TransactionsService>();
 
 var app = builder.Build();
 

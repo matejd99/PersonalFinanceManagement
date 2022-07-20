@@ -8,10 +8,11 @@ namespace PersonalFinanceManagement.Controllers
 {
     [Route("categories")]
     [ApiController]
-    public class ImportCategoriesController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         [HttpPost("import")]
-        public List<CategoriesModel> ImportCategories(IFormFile csv) {
+        public List<CategoriesModel> ImportCategories(IFormFile csv)
+        {
             using (var streamReader = new StreamReader(csv.OpenReadStream()))
             {
                 using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
