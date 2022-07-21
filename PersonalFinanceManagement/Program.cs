@@ -16,6 +16,7 @@ builder.Services.AddDbContext<PFMDbContext>(
         options => options.UseSqlServer(connection));
 
 builder.Services.AddScoped<TransactionsService>();
+builder.Services.AddScoped<CategoriesService>();
 
 var app = builder.Build();
 

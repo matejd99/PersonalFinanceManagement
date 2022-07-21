@@ -8,7 +8,6 @@ namespace PersonalFinanceManagement.Models
         [Key]
         public string Code { get; set; }
         public string ParentCode { get; set; }
-        [ForeignKey("TransactionsModel")]
         public string Name { get; set; }
     }
 }

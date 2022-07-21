@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalFinanceManagement.Dto;
 using PersonalFinanceManagement.Models;
+using PersonalFinanceManagement.Models.Helpers;
 using PersonalFinanceManagement.Services;
 
 namespace PersonalFinanceManagement.Controllers
@@ -31,5 +32,28 @@ namespace PersonalFinanceManagement.Controllers
         {
             return TransactionsService.GetList(transactionKind, startDate, endDate, page, pageSize);
         }
+
+        [HttpPost("{id}/categorize")]
+        public async Task<IActionResult> CategorizeTransaction([FromRoute] int id, [FromBody] CategorizeRequest request)
+        {
+            var result = await TransactionsService.CategorizeTransaction(id, request);
+            
+            if(result == null)
+            {
+                return NotFound();
+            }
+
+            else return Ok(result);
+        }
+
+        [HttpGet("spending-analytics")]
+        public async Task<TransactionDto> SpendingAnalytics(string CategoryCode, string StartDate, string EndDate, string direction)
+        {
+            return null;
+        }
+
     }
 }
+
+
+

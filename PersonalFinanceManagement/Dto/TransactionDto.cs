@@ -1,7 +1,10 @@
-﻿namespace PersonalFinanceManagement.Dto
+﻿using PersonalFinanceManagement.Models;
+
+namespace PersonalFinanceManagement.Dto
 {
     public class TransactionDto
     {
+      
         public int Id { get; set; }
         public string BeneficiaryName { get; set; }
         public DateTime Date { get; set; }
@@ -11,5 +14,6 @@
         public string Currency { get; set; }
         public int? MCC { get; set; }
         public string Kind { get; set; }
+        public CategoryDto? categoryDto { get; set; }
     }
 }
