@@ -3,11 +3,12 @@ using PersonalFinanceManagement.Data;
 using PersonalFinanceManagement.Dto;
 using PersonalFinanceManagement.Factories;
 using PersonalFinanceManagement.Models;
+using PersonalFinanceManagement.Services;
+using PersonalFinanceManagement.Services.Interfaces;
 using System.Globalization;
 
-namespace PersonalFinanceManagement.Services
-{
-    public class CategoriesService
+
+    public class CategoriesService : ICategoryInterface
     {
         private PFMDbContext Context;
 
@@ -42,4 +43,3 @@ namespace PersonalFinanceManagement.Services
             return new List<CategoriesModel>();
         }
     }
-}

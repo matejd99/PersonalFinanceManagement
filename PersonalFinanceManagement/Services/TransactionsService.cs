@@ -44,10 +44,14 @@ namespace PersonalFinanceManagement.Services
                 .ToList();
         }
 
-        public TransactionsModel GetTransactionById(int id)
+        public async Task<TransactionDto> GetTransactionById(int id)
         {
-            TransactionsModel transaction = Context.Transactions.Find(id);
-            return transaction;
+            TransactionsModel transaction = await Context.Transactions.FindAsync(id);
+            if(transaction != null)
+            {
+                return TransactionsFactory.ToDto(transaction);
+            }
+            else return null;
         }
 
         public List<TransactionsModel> Import(IFormFile csv)
@@ -68,16 +72,16 @@ namespace PersonalFinanceManagement.Services
         }
 
 
-        public async Task<TransactionsModel> CategorizeTransaction(int id, CategorizeRequest request)
+        public async Task<TransactionDto> CategorizeTransaction(int id, CategorizeRequest request)
         {
             CategoriesModel category = await GetCategoryByCode(request.CategoryCode);
-            TransactionsModel transaction = GetTransactionById(id);
+            TransactionDto transaction = GetTransactionById(id);
             if (category == null || transaction == null)
             {
                 return null;
             }
 
-            transaction.categoriesModel = category;
+            transaction.CategoryDto = category;
 
             Context.SaveChanges();
 

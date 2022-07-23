@@ -9,10 +9,10 @@ namespace PersonalFinanceManagement.Mappers
         {
             return new TransactionDto()
             {
-                Id = transaction.Id,
-                BeneficiaryName = transaction.BeneficiaryName,
-                Date = transaction.Date,
-                Direction = transaction.Direction,
+               Id = transaction.Id,
+               BeneficiaryName = transaction.BeneficiaryName,
+               Date = transaction.Date,
+               Direction = transaction.Direction,
                Amount = transaction.Amount,
                Description = transaction.Description,
                Currency = transaction.Currency,

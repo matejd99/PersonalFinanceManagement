@@ -52,6 +52,11 @@ namespace PersonalFinanceManagement.Controllers
             return null;
         }
 
+        [HttpPost("{id}/split")]
+        public async Task<TransactionDto> SplitTransaction([FromRoute] int id) {
+            return null;
+        }
+
     }
 }
 
