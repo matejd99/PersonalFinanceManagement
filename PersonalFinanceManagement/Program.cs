@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connection = @"Server=db;Database=master;User=sa;Password=Your_password123;";
+var connection = @"data source=127.0.0.1;User Id=sa;Password=Secret1234";
 builder.Services.AddDbContext<PFMDbContext>(
         options => options.UseSqlServer(connection));
 

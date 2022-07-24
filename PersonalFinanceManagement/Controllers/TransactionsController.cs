@@ -18,9 +18,9 @@ namespace PersonalFinanceManagement.Controllers
         }
 
         [HttpPost("import")]
-        public List<TransactionsModel> ImportTransactions(IFormFile csv)
+        public async Task<List<TransactionsModel>> ImportTransactionsAsync(IFormFile csv)
         {
-            return TransactionsService.Import(csv);
+            return await TransactionsService.ImportAsync(csv);
         }
 
         [HttpGet("Transactions")]

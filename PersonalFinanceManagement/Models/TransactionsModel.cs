@@ -6,7 +6,8 @@ namespace PersonalFinanceManagement.Models
     public class TransactionsModel
     {
 
-        [Key]   
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string BeneficiaryName { get; set; }
         public DateTime Date { get; set; }

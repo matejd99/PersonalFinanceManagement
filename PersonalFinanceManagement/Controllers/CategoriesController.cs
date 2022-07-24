@@ -10,19 +10,18 @@ namespace PersonalFinanceManagement.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        [HttpPost("import")]
-        public List<CategoriesModel> ImportCategories(IFormFile csv)
+
+        private readonly CategoriesService categoriesService;  
+
+        public CategoriesController(CategoriesService categoriesService)
         {
-            using (var streamReader = new StreamReader(csv.OpenReadStream()))
-            {
-                using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
-                {
-                    csvReader.Context.RegisterClassMap<CategoriesMapper>();
-                    var a = csvReader.GetRecords<CategoriesModel>();
-                    return a.ToList();
-                }
-            }
-            return new List<CategoriesModel>();
+            this.categoriesService = categoriesService;
+        }
+
+        [HttpPost("import")]
+        public async Task<List<CategoriesModel>> ImportCategories(IFormFile csv)
+        {
+            return await categoriesService.ImportCategoriesAsync(csv);
         }
     }
 }

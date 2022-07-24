@@ -1,4 +1,5 @@
 ﻿using PersonalFinanceManagement.Dto;
+using PersonalFinanceManagement.Factories;
 using PersonalFinanceManagement.Models;
 
 namespace PersonalFinanceManagement.Mappers
@@ -17,7 +18,8 @@ namespace PersonalFinanceManagement.Mappers
                Description = transaction.Description,
                Currency = transaction.Currency,
                MCC = transaction.MCC,
-               Kind = transaction.Kind
+               Kind = transaction.Kind,
+               categoryDto = transaction.categoriesModel == null ? null : CategoryFactory.ToDto(transaction.categoriesModel)
            };
         }
     }

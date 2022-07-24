@@ -54,7 +54,7 @@ namespace PersonalFinanceManagement.Services
             else return null;
         }
 
-        public List<TransactionsModel> Import(IFormFile csv)
+        public async Task<List<TransactionsModel>> ImportAsync(IFormFile csv)
         {
             using (var streamReader = new StreamReader(csv.OpenReadStream()))
             {
@@ -64,7 +64,11 @@ namespace PersonalFinanceManagement.Services
 
                     List<TransactionsModel> transactions = csvReader.GetRecords<TransactionsModel>().ToList();
 
-                    Context.Transactions.AddRange(transactions);
+                    //tuka proverki pravam
+
+                    await Context.Transactions.AddRangeAsync(transactions);
+
+                    await Context.SaveChangesAsync();
 
                     return transactions;
                 }
@@ -75,22 +79,22 @@ namespace PersonalFinanceManagement.Services
         public async Task<TransactionDto> CategorizeTransaction(int id, CategorizeRequest request)
         {
             CategoriesModel category = await GetCategoryByCode(request.CategoryCode);
-            TransactionDto transaction = GetTransactionById(id);
+            TransactionsModel transaction = await Context.Transactions.FindAsync(id);
             if (category == null || transaction == null)
             {
                 return null;
             }
 
-            transaction.CategoryDto = category;
+            transaction.categoriesModel = category;
 
-            Context.SaveChanges();
+            Context.SaveChangesAsync();
 
-            return transaction;
+            return TransactionsFactory.ToDto(transaction);
         }
 
         private async Task<CategoriesModel> GetCategoryByCode(string code)
         {
-            return await Context.Categories.Where(c => c.Code == code).FirstAsync();
+            return await Context.Categories.FindAsync(code);
         }
     }
 }
