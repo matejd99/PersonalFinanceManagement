@@ -47,7 +47,7 @@ namespace PersonalFinanceManagement.Services
         public async Task<TransactionDto> GetTransactionById(int id)
         {
             TransactionsModel transaction = await Context.Transactions.FindAsync(id);
-            if(transaction != null)
+            if (transaction != null)
             {
                 return TransactionsFactory.ToDto(transaction);
             }
@@ -91,6 +91,46 @@ namespace PersonalFinanceManagement.Services
 
             return TransactionsFactory.ToDto(transaction);
         }
+
+        public async Task<GroupCategories> SpendingAnalytics(string Category, DateTime? startDate, DateTime? endDate, string? direction)
+        {
+            var group = new GroupCategories();
+            int count = 0;
+            float Ammount = 0;
+            
+            var transactions = Context.Transactions
+                .Where(c => c.categoriesModel.Code == Category || c.categoriesModel.ParentCode == Category);
+
+            if (startDate != null)
+            {
+                transactions = transactions.Where(t => t.Date >= startDate);
+            }
+
+            if (endDate != null)
+            {
+                transactions = transactions.Where(t => t.Date <= endDate);
+            }
+
+            if(direction != null)
+            {
+                transactions = transactions.Where(t => t.Direction == direction);
+            }
+
+            foreach (var transaction in (await transactions.ToListAsync()))
+            {
+                count++;
+                Ammount += transaction.Amount;
+            }
+
+            group.SpendingInCategories.Add(new SpendingInCat() { Code = Category, Amount = Ammount, Count = count });
+            return group;
+
+        }
+        //public async Task<TransactionDto> SplitTransaction() 
+        //{ 
+                
+                
+        //}
 
         private async Task<CategoriesModel> GetCategoryByCode(string code)
         {

@@ -36,10 +36,12 @@ using System.Globalization;
                     csvReader.Context.RegisterClassMap<CategoriesMapper>();
                     var categories = csvReader.GetRecords<CategoriesModel>().DistinctBy(c => c.Code);
 
+                        
+
                 // Add logic for Update or Add base on code.
     
 
-                await Context.Categories.AddRangeAsync(categories);
+                    await Context.Categories.AddRangeAsync(categories);
                     await Context.SaveChangesAsync();
                     return categories.ToList();
                 }

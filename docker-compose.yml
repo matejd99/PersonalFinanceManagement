@@ -4,7 +4,7 @@ services:
   #personalfinancemanagement:
   #  image: ${DOCKER_REGISTRY-}personalfinancemanagement
   #  build:
-  #    context: .
+  #    context: .   
   #    dockerfile: PersonalFinanceManagement/Dockerfile
   mssql:
     image: 'mcr.microsoft.com/mssql/server'

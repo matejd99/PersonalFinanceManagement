@@ -47,9 +47,9 @@ namespace PersonalFinanceManagement.Controllers
         }
 
         [HttpGet("spending-analytics")]
-        public async Task<TransactionDto> SpendingAnalytics(string CategoryCode, string StartDate, string EndDate, string direction)
+        public async Task<GroupCategories> SpendingAnalytics([FromQuery]string CategoryCode, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string? direction)
         {
-            return null;
+            return await TransactionsService.SpendingAnalytics(CategoryCode, startDate, endDate, direction);
         }
 
         [HttpPost("{id}/split")]
