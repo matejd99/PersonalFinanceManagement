@@ -14,4 +14,8 @@ services:
         - ACCEPT_EULA=Y
         - SA_PASSWORD=Secret1234
     volumes:
-        - ~/apps/mssql/data:/var/lib/mssqlql/data
+        - personal-finance-management:/var/opt/mssql
+
+volumes:
+  personal-finance-management:
+    

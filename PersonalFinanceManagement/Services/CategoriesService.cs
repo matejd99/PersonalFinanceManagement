@@ -49,7 +49,6 @@ using System.Globalization;
                         await Context.SaveChangesAsync();
                     }               
                 }
-                // Add logic for Update or Add base on code.
                     return categories.ToList();
                 }
             }

@@ -56,82 +56,127 @@ namespace PersonalFinanceManagement.Services
 
         public async Task<List<TransactionsModel>> ImportAsync(IFormFile csv)
         {
-            using (var streamReader = new StreamReader(csv.OpenReadStream()))
+            using (var DbTransaction = Context.Database.BeginTransaction())
             {
-                using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+                using (var streamReader = new StreamReader(csv.OpenReadStream()))
                 {
-                    csvReader.Context.RegisterClassMap<TransactionMapper>();
+                    using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+                    {
+                        csvReader.Context.RegisterClassMap<TransactionMapper>();
 
-                    List<TransactionsModel> transactions = csvReader.GetRecords<TransactionsModel>().ToList();
+                        List<TransactionsModel> transactions = csvReader.GetRecords<TransactionsModel>().ToList();
 
-                    
+                        transactions = transactions.Where(t =>
+                        {
+                            if (t.Amount < 0)
+                            {
+                                return false;
+                            } else if (t.Id == null)
+                            {
+                                return false;
+                            } else if (t.Kind == null)
+                            {
+                                return false;
+                            } else if (t.Kind != "pmt" || t.Kind != "dep" || t.Kind != "fee" || t.Kind != "sal" || t.Kind != "wdw")
+                            {
+                                return false;
+                            } else if(t.Kind == null)
+                            {
+                                return false;
+                            } else if(t.Direction == null)
+                            {
+                                return false;
+                            } else if(t.Direction != "d" || t.Direction != "c")
+                            {
+                                return false;
+                            }
+                            return true;
+                        }).ToList();
 
-                    //tuka proverki pravam
+                        await Context.Transactions.AddRangeAsync(transactions);
 
-                    await Context.Transactions.AddRangeAsync(transactions);
+                        await Context.SaveChangesAsync();
 
-                    await Context.SaveChangesAsync();
+                        await DbTransaction.CommitAsync();
 
-                    return transactions;
+                        return transactions;
+                    }
                 }
             }
         }
 
         public async Task<TransactionDto> CategorizeTransaction(int id, CategorizeRequest request)
         {
-            CategoriesModel category = await GetCategoryByCode(request.CategoryCode);
-            TransactionsModel transaction = await Context.Transactions.FindAsync(id);
-            if (category == null || transaction == null)
+            using (var DbTransaction = Context.Database.BeginTransaction())
             {
-                return null;
+                CategoriesModel category = await GetCategoryByCode(request.CategoryCode);
+                TransactionsModel transaction = await Context.Transactions.FindAsync(id);
+                if (category == null || transaction == null)
+                {
+                    return null;
+                }
+
+                transaction.categoriesModel = category;
+
+                await Context.SaveChangesAsync();
+
+                await DbTransaction.CommitAsync();
+
+                return TransactionsFactory.ToDto(transaction);
             }
-
-            transaction.categoriesModel = category;
-
-            Context.SaveChangesAsync();
-
-            return TransactionsFactory.ToDto(transaction);
         }
 
         public async Task<GroupCategories> SpendingAnalytics(string Category, DateTime? startDate, DateTime? endDate, string? direction)
         {
-            var group = new GroupCategories();
-            int count = 0;
-            float Ammount = 0;
-            
-            var transactions = Context.Transactions
-                .Where(c => c.categoriesModel.Code == Category || c.categoriesModel.ParentCode == Category);
-
-            if (startDate != null)
+            using (var DbTransaction = Context.Database.BeginTransaction())
             {
-                transactions = transactions.Where(t => t.Date >= startDate);
+                var group = new GroupCategories();
+                int count = 0;
+                float Ammount = 0;
+
+                var transactions = Context.Transactions
+                    .Where(c => c.categoriesModel.Code == Category || c.categoriesModel.ParentCode == Category);
+
+                if (startDate != null)
+                {
+                    transactions = transactions.Where(t => t.Date >= startDate);
+                }
+
+                if (endDate != null)
+                {
+                    transactions = transactions.Where(t => t.Date <= endDate);
+                }
+
+                if (direction != null)
+                {
+                    transactions = transactions.Where(t => t.Direction == direction);
+                }
+
+                foreach (var transaction in (await transactions.ToListAsync()))
+                {
+                    count++;
+                    Ammount += transaction.Amount;
+                }
+
+                group.SpendingInCategories.Add(new SpendingInCat() { Code = Category, Amount = Ammount, Count = count });
+                await DbTransaction.CommitAsync();
+                return group;
             }
-
-            if (endDate != null)
-            {
-                transactions = transactions.Where(t => t.Date <= endDate);
-            }
-
-            if(direction != null)
-            {
-                transactions = transactions.Where(t => t.Direction == direction);
-            }
-
-            foreach (var transaction in (await transactions.ToListAsync()))
-            {
-                count++;
-                Ammount += transaction.Amount;
-            }
-
-            group.SpendingInCategories.Add(new SpendingInCat() { Code = Category, Amount = Ammount, Count = count });
-            return group;
-
         }
 
-        //public async Task<TransactionDto> SplitTransaction() 
+        //public async Task<TransactionDto> SplitTransaction(int id)
         //{
-        
-        //}
+        //    var transactions = Context.Transactions.Find(id);
+
+        //    if(transactions == null){
+        //        return null;
+        //    }
+        //    else if(transactions.categoriesModel == null)
+        //    {
+        //        trq
+        //    }
+                
+        //}   
 
         private async Task<CategoriesModel> GetCategoryByCode(string code)
         {
