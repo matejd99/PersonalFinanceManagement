@@ -64,6 +64,8 @@ namespace PersonalFinanceManagement.Services
 
                     List<TransactionsModel> transactions = csvReader.GetRecords<TransactionsModel>().ToList();
 
+                    
+
                     //tuka proverki pravam
 
                     await Context.Transactions.AddRangeAsync(transactions);
@@ -74,7 +76,6 @@ namespace PersonalFinanceManagement.Services
                 }
             }
         }
-
 
         public async Task<TransactionDto> CategorizeTransaction(int id, CategorizeRequest request)
         {
@@ -126,10 +127,10 @@ namespace PersonalFinanceManagement.Services
             return group;
 
         }
+
         //public async Task<TransactionDto> SplitTransaction() 
-        //{ 
-                
-                
+        //{
+        
         //}
 
         private async Task<CategoriesModel> GetCategoryByCode(string code)

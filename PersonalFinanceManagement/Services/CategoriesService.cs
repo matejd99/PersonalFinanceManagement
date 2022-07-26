@@ -34,15 +34,22 @@ using System.Globalization;
                 using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
                 {
                     csvReader.Context.RegisterClassMap<CategoriesMapper>();
-                    var categories = csvReader.GetRecords<CategoriesModel>().DistinctBy(c => c.Code);
+                var categories = csvReader.GetRecords<CategoriesModel>();
 
-                        
-
+                foreach (var category in categories)
+                {
+                    var DBCategory = Context.Categories.Find(category.Code);
+                    if (DBCategory == null) {
+                        Context.Categories.Add(category);
+                        await Context.SaveChangesAsync();
+                    } else
+                    {
+                        DBCategory.ParentCode = category.ParentCode;
+                        DBCategory.Name = category.Name;
+                        await Context.SaveChangesAsync();
+                    }               
+                }
                 // Add logic for Update or Add base on code.
-    
-
-                    await Context.Categories.AddRangeAsync(categories);
-                    await Context.SaveChangesAsync();
                     return categories.ToList();
                 }
             }
