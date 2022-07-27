@@ -10,8 +10,5 @@ namespace PersonalFinanceManagement.Services.Interfaces
                                         int? page,
                                         int? pageSize);
         Task<TransactionDto> GetTransactionById(int id);
-
-
-
     }
 }

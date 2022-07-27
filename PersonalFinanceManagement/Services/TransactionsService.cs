@@ -71,22 +71,28 @@ namespace PersonalFinanceManagement.Services
                             if (t.Amount < 0)
                             {
                                 return false;
-                            } else if (t.Id == null)
+                            }
+                            else if (t.Id == null)
                             {
                                 return false;
-                            } else if (t.Kind == null)
+                            }
+                            else if (t.Kind == null)
                             {
                                 return false;
-                            } else if (t.Kind != "pmt" || t.Kind != "dep" || t.Kind != "fee" || t.Kind != "sal" || t.Kind != "wdw")
+                            }
+                            else if (t.Kind != "pmt" || t.Kind != "dep" || t.Kind != "fee" || t.Kind != "sal" || t.Kind != "wdw")
                             {
                                 return false;
-                            } else if(t.Kind == null)
+                            }
+                            else if (t.Kind == null)
                             {
                                 return false;
-                            } else if(t.Direction == null)
+                            }
+                            else if (t.Direction == null)
                             {
                                 return false;
-                            } else if(t.Direction != "d" || t.Direction != "c")
+                            }
+                            else if (t.Direction != "d" || t.Direction != "c")
                             {
                                 return false;
                             }
@@ -164,23 +170,62 @@ namespace PersonalFinanceManagement.Services
             }
         }
 
-        //public async Task<TransactionDto> SplitTransaction(int id)
-        //{
-        //    var transactions = Context.Transactions.Find(id);
+        public async Task<TransactionDto> SplitTransaction(int id, List<string> codes)
+        {
+            using (var DbTransaction = Context.Database.BeginTransaction())
+            {
 
-        //    if(transactions == null){
-        //        return null;
-        //    }
-        //    else if(transactions.categoriesModel == null)
-        //    {
-        //        trq
-        //    }
-                
-        //}   
+                if (codes == null) {
+                    await DbTransaction.RollbackAsync();
+                    return null;
+                }
+
+                var transaction = Context.Transactions.Find(id);
+
+                if (transaction == null)
+                {
+                    await DbTransaction.RollbackAsync();
+                    return null;
+                }
+
+                Context.TransactionSplits.RemoveRange(transaction.Splits);
+
+                var categories = Context.Categories.Where(c => codes.Contains(c.Code));
+
+                if(categories.Count() != codes.Count())
+                {
+                    await DbTransaction.RollbackAsync();
+                    return null;
+                }
+
+                List<TransactionsSplit> splits = new List<TransactionsSplit>();
+
+                foreach (var category in categories)
+                {
+                    splits.Add(new TransactionsSplit
+                    {
+                        Transaction = transaction,
+                        Category = category,
+                        Amount = transaction.Amount / codes.Count
+                    });
+                }
+
+                transaction.Splits = splits;
+
+                await Context.TransactionSplits.AddRangeAsync(splits);
+
+                await Context.SaveChangesAsync();
+
+                await DbTransaction.CommitAsync();
+
+                return TransactionsFactory.ToDto(transaction);
+            }
+        }
 
         private async Task<CategoriesModel> GetCategoryByCode(string code)
         {
             return await Context.Categories.FindAsync(code);
         }
+
     }
 }

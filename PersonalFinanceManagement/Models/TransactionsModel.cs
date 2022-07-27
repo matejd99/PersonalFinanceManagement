@@ -16,8 +16,9 @@ namespace PersonalFinanceManagement.Models
         public string Description { get; set; }
         public string Currency { get; set; }
         [ForeignKey("MccCodes")]
-        public int? MCC { get; set; } 
+        public int? MCC { get; set; }
         public string Kind { get; set; }
         public CategoriesModel? categoriesModel { get; set; }
+        public List<TransactionsSplit> Splits { get; set; }
     }
 }

@@ -19,8 +19,9 @@ namespace PersonalFinanceManagement.Mappers
                Currency = transaction.Currency,
                MCC = transaction.MCC,
                Kind = transaction.Kind,
-               categoryDto = transaction.categoriesModel == null ? null : CategoryFactory.ToDto(transaction.categoriesModel)
-           };
+               categoryDto = transaction.categoriesModel == null ? null : CategoryFactory.ToDto(transaction.categoriesModel),
+               SplitsDto = transaction.SplitsDto
+    };
         }
     }
 }
