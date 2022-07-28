@@ -1,0 +1,26 @@
+<table class="table table-striped">
+    <thead>
+        <th>Id</th>
+        <th>BeneficiaryName</th>
+        <th>Date</th>
+        <th>Direction</th>
+        <th>Ammount</th>
+        <th>Description</th>
+        <th>Currency</th>
+        <th>MCC</th>
+        <th>Kind</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of TransacionList$|async">
+            <td>{{item.Id}</td>
+            <td>{{item.BeneficiaryName}}</td>
+            <td>{{item.Date}}</td>
+            <td>{{item.Direction}}</td>
+            <td>{{item.Ammount}}</td>
+            <td>{{item.Description}}</td>
+            <td>{{item.Currency}}</td>
+            <td>{{item.MCC}}</td>
+            <td>{{item.Kind}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -228,5 +228,21 @@ namespace PersonalFinanceManagement.Services
         {
             return await Context.Categories.FindAsync(code);
         }
+
+        //public async Task<TransactionDto> AutoCategorize()
+        //{
+        //    var transactions = Context.Transactions.ToList();
+        //    foreach(var transaction in transactions)
+        //    {
+        //        if (transaction.categoriesModel != null)
+        //        {
+        //            return null;
+        //        }
+        //        else {          
+        //        }
+        //    }
+        //    return null;
+        //}
+
     }
 }
