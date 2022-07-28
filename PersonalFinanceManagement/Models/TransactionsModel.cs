@@ -5,7 +5,6 @@ namespace PersonalFinanceManagement.Models
 {
     public class TransactionsModel
     {
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }

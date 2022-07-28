@@ -12,7 +12,7 @@ using PersonalFinanceManagement.Data;
 namespace PersonalFinanceManagement.Migrations
 {
     [DbContext(typeof(PFMDbContext))]
-    [Migration("20220724134941_InitialCreate")]
+    [Migration("20220728080539_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,6 +86,32 @@ namespace PersonalFinanceManagement.Migrations
                     b.ToTable("Transactions");
                 });
 
+            modelBuilder.Entity("PersonalFinanceManagement.Models.TransactionsSplit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CategoryCode")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TransactionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryCode");
+
+                    b.HasIndex("TransactionId");
+
+                    b.ToTable("TransactionSplits");
+                });
+
             modelBuilder.Entity("PersonalFinanceManagement.Models.TransactionsModel", b =>
                 {
                     b.HasOne("PersonalFinanceManagement.Models.CategoriesModel", "categoriesModel")
@@ -93,6 +119,28 @@ namespace PersonalFinanceManagement.Migrations
                         .HasForeignKey("categoriesModelCode");
 
                     b.Navigation("categoriesModel");
+                });
+
+            modelBuilder.Entity("PersonalFinanceManagement.Models.TransactionsSplit", b =>
+                {
+                    b.HasOne("PersonalFinanceManagement.Models.CategoriesModel", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryCode");
+
+                    b.HasOne("PersonalFinanceManagement.Models.TransactionsModel", "Transaction")
+                        .WithMany("Splits")
+                        .HasForeignKey("TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Transaction");
+                });
+
+            modelBuilder.Entity("PersonalFinanceManagement.Models.TransactionsModel", b =>
+                {
+                    b.Navigation("Splits");
                 });
 #pragma warning restore 612, 618
         }

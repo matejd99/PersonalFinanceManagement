@@ -15,7 +15,7 @@ namespace PersonalFinanceManagement.Dto
         public int? MCC { get; set; }
         public string Kind { get; set; }
         public CategoryDto? categoryDto { get; set; }
-        public List<TransactionsSplit> Splits { get; set; }
+        public List<SplitsDto> SplitsDto { get; set; }
 
     }
 }

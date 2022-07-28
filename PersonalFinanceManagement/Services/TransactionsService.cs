@@ -5,11 +5,12 @@ using PersonalFinanceManagement.Dto;
 using PersonalFinanceManagement.Mappers;
 using PersonalFinanceManagement.Models;
 using PersonalFinanceManagement.Models.Helpers;
+using PersonalFinanceManagement.Services.Interfaces;
 using System.Globalization;
 
 namespace PersonalFinanceManagement.Services
 {
-    public class TransactionsService
+    public class TransactionsService : ITransactionsInterface
     {
         private PFMDbContext Context;
 
@@ -80,10 +81,10 @@ namespace PersonalFinanceManagement.Services
                             {
                                 return false;
                             }
-                            else if (t.Kind != "pmt" || t.Kind != "dep" || t.Kind != "fee" || t.Kind != "sal" || t.Kind != "wdw")
-                            {
-                                return false;
-                            }
+                            //else if (t.Kind != "pmt" || t.Kind != "dep" || t.Kind != "fee" || t.Kind != "sal" || t.Kind != "wdw")
+                            //{
+                            //    return false;
+                            //}
                             else if (t.Kind == null)
                             {
                                 return false;
@@ -92,10 +93,10 @@ namespace PersonalFinanceManagement.Services
                             {
                                 return false;
                             }
-                            else if (t.Direction != "d" || t.Direction != "c")
-                            {
-                                return false;
-                            }
+                            //else if (t.Direction != "d" || t.Direction != "c")
+                            //{
+                            //    return false;
+                            //}
                             return true;
                         }).ToList();
 
@@ -119,6 +120,7 @@ namespace PersonalFinanceManagement.Services
                 TransactionsModel transaction = await Context.Transactions.FindAsync(id);
                 if (category == null || transaction == null)
                 {
+                    await DbTransaction.RollbackAsync();
                     return null;
                 }
 
@@ -222,10 +224,9 @@ namespace PersonalFinanceManagement.Services
             }
         }
 
-        private async Task<CategoriesModel> GetCategoryByCode(string code)
+        public async Task<CategoriesModel> GetCategoryByCode(string code)
         {
             return await Context.Categories.FindAsync(code);
         }
-
     }
 }

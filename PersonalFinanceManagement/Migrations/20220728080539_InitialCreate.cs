@@ -47,14 +47,53 @@ namespace PersonalFinanceManagement.Migrations
                         principalColumn: "Code");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TransactionSplits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionId = table.Column<int>(type: "int", nullable: false),
+                    CategoryCode = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Amount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionSplits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TransactionSplits_Categories_CategoryCode",
+                        column: x => x.CategoryCode,
+                        principalTable: "Categories",
+                        principalColumn: "Code");
+                    table.ForeignKey(
+                        name: "FK_TransactionSplits_Transactions_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_categoriesModelCode",
                 table: "Transactions",
                 column: "categoriesModelCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionSplits_CategoryCode",
+                table: "TransactionSplits",
+                column: "CategoryCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransactionSplits_TransactionId",
+                table: "TransactionSplits",
+                column: "TransactionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "TransactionSplits");
+
             migrationBuilder.DropTable(
                 name: "Transactions");
 

@@ -6,6 +6,6 @@ namespace PersonalFinanceManagement.Models
     {
         [Key]
         public int Code { get; set; }
-        public string MerchanTtype { get; set; }
+        public string? MerchantTtype { get; set; }
     }
 }

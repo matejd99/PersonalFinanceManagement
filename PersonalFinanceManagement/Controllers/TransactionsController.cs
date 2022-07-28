@@ -23,7 +23,7 @@ namespace PersonalFinanceManagement.Controllers
             return await TransactionsService.ImportAsync(csv);
         }
 
-        [HttpGet("Transactions")]
+        [HttpGet]
         public List<TransactionDto> TransactionsGetList([FromQuery] string transactionKind,
                                                         [FromQuery] DateTime? startDate,
                                                         [FromQuery] DateTime? endDate,
@@ -37,8 +37,8 @@ namespace PersonalFinanceManagement.Controllers
         public async Task<IActionResult> CategorizeTransaction([FromRoute] int id, [FromBody] CategorizeRequest request)
         {
             var result = await TransactionsService.CategorizeTransaction(id, request);
-            
-            if(result == null)
+
+            if (result == null)
             {
                 return NotFound();
             }
@@ -47,15 +47,29 @@ namespace PersonalFinanceManagement.Controllers
         }
 
         [HttpGet("spending-analytics")]
-        public async Task<GroupCategories> SpendingAnalytics([FromQuery]string CategoryCode, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string? direction)
+        public async Task<IActionResult> SpendingAnalytics([FromQuery] string CategoryCode, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate, [FromQuery] string? direction)
         {
-            return await TransactionsService.SpendingAnalytics(CategoryCode, startDate, endDate, direction);
+            var result = await TransactionsService.SpendingAnalytics(CategoryCode, startDate, endDate, direction);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else return Ok(result); 
         }
 
         [HttpPost("{id}/split")]
-        public async Task<TransactionDto> SplitTransaction([FromRoute] int id) {
-            return null;
+        public async Task<IActionResult> SplitTransaction([FromRoute] int id, [FromBody] List<string> codes) {
+           var result = await TransactionsService.SplitTransaction(id, codes);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            else return Ok(result);
         }
 
+        [HttpPost("/auto-categorize")]
+        public async Task<TransactionDto> AutoCategorize() {
+            return null;
+        }
     }
 }
