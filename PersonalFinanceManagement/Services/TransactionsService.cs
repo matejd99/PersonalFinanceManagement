@@ -20,13 +20,6 @@ namespace PersonalFinanceManagement.Services
             this.repository = repository;
         }
 
-        //private PFMDbContext Context;
-
-        //public TransactionsService(PFMDbContext context)
-        //{
-        //    this.Context = context;
-        //}
-
         public async Task<List<TransactionDto>> GetList(string transactionKind,
                                             DateTime? startDate,
                                             DateTime? endDate,

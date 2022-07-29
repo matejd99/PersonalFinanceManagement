@@ -1,9 +1,10 @@
-﻿using PersonalFinanceManagement.Dto;
+﻿using PersonalFinanceManagement.Data.Interfaces;
+using PersonalFinanceManagement.Dto;
 using PersonalFinanceManagement.Factories;
 
 namespace PersonalFinanceManagement.Data.Repository
 {
-    public class CategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
 
         private readonly PFMDbContext Context;

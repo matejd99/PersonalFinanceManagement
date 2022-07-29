@@ -1,4 +1,5 @@
-﻿using PersonalFinanceManagement.Dto;
+﻿using PersonalFinanceManagement.Data.Interfaces;
+using PersonalFinanceManagement.Dto;
 using PersonalFinanceManagement.Mappers;
 using PersonalFinanceManagement.Models;
 using PersonalFinanceManagement.Models.Helpers;
@@ -6,7 +7,7 @@ using PersonalFinanceManagement.Services.Interfaces;
 
 namespace PersonalFinanceManagement.Data.Repository
 {
-    public class TransactionRepository : TransactionInterface
+    public class TransactionRepository : ITransactionRepository
     {
         private readonly PFMDbContext Context;
 
