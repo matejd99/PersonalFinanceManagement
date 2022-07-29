@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PersonalFinanceManagement.Data;
+using PersonalFinanceManagement.Data.Repository;
 using PersonalFinanceManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<PFMDbContext>(
 
 builder.Services.AddScoped<TransactionsService>();
 builder.Services.AddScoped<CategoriesService>();
+builder.Services.AddScoped<TransactionRepository>();
+builder.Services.AddScoped<CategoryRepository>();
 
 var app = builder.Build();
 
@@ -26,6 +29,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(builder => builder
+     .AllowAnyOrigin()
+     .AllowAnyMethod()
+     .AllowAnyHeader());
 
 app.UseAuthorization();
 

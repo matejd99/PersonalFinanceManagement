@@ -17,5 +17,5 @@ export interface TransactionCategorizeCommand {
     /**
      * Code of category or subcategory to move transaction to
      */
-    catcode: string;
+     CategoryCode: string;
 }

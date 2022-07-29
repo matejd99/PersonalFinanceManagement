@@ -24,13 +24,17 @@ namespace PersonalFinanceManagement.Controllers
         }
 
         [HttpGet]
-        public List<TransactionDto> TransactionsGetList([FromQuery] string transactionKind,
+        public async Task<IActionResult> TransactionsGetList([FromQuery] string transactionKind,
                                                         [FromQuery] DateTime? startDate,
                                                         [FromQuery] DateTime? endDate,
                                                         [FromQuery] int? page,
                                                         [FromQuery] int? pageSize)
         {
-            return TransactionsService.GetList(transactionKind, startDate, endDate, page, pageSize);
+            var result = await TransactionsService.GetList(transactionKind, startDate, endDate, page, pageSize);
+            if (result == null)
+            {
+                return NotFound();
+            } else return Ok(result);
         }
 
         [HttpPost("{id}/categorize")]
@@ -67,9 +71,9 @@ namespace PersonalFinanceManagement.Controllers
             else return Ok(result);
         }
 
-        [HttpPost("/auto-categorize")]
-        public async Task<TransactionDto> AutoCategorize() {
-            return null;
-        }
+        //[HttpPost("/auto-categorize")]
+        //public async Task<TransactionDto> AutoCategorize() {
+        //    return null;
+        //}
     }
 }

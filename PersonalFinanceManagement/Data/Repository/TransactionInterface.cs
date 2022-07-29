@@ -1,6 +1,6 @@
 ﻿namespace PersonalFinanceManagement.Data.Repository
 {
-    public class Repository
+    public class TransactionInterface
     {
     }
 }

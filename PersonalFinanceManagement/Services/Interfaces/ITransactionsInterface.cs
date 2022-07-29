@@ -6,7 +6,7 @@ namespace PersonalFinanceManagement.Services.Interfaces
 {
     public interface ITransactionsInterface
     {
-        List<TransactionDto> GetList(string transactionKind,
+        Task<List<TransactionDto>> GetList(string transactionKind,
                                         DateTime? startDate,
                                         DateTime? endDate,
                                         int? page,

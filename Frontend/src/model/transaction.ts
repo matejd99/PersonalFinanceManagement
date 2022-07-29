@@ -1,6 +1,6 @@
 /**
  * Personal Finance Management API
- * Personal Finance Management API allows analyze of a client's spending patterns against pre-defined budgets over time 
+ * Personal Finance Management API allows analyze of a client's spending patterns against pre-defined budgets over time
  *
  * OpenAPI spec version: v1
  * Contact: aleksandar.milosevic@asseco-see.rs
@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Category } from './category';
 import { DirectionsEnum } from './directionsEnum';
 import { MccCodeEnum } from './mccCodeEnum';
 import { TransactionKindsEnum } from './transactionKindsEnum';
@@ -16,11 +17,11 @@ import { TransactionKindsEnum } from './transactionKindsEnum';
 /**
  * transaction
  */
-export interface Transaction { 
+export interface Transaction {
     /**
      * Id of the transaction
      */
-    readonly id: string;
+    readonly id: number;
     /**
      * beneficiary name
      */
@@ -47,5 +48,5 @@ export interface Transaction {
     /**
      * Code of category. If literal it's category, If number it is a sub category code.
      */
-    readonly catcode?: string;
+    readonly categoryDto?: Category;
 }

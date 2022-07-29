@@ -1,0 +1,11 @@
+<mat-form-field appearance="fill">
+  <mat-label>Category</mat-label>
+  <mat-select [(value)]="selection">
+    <mat-option *ngFor="let category of CategoriesList$" [value]="category.code">
+      {{ category.code }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-button color="primary" (click)="onOk()">
+  Ok
+</button>
