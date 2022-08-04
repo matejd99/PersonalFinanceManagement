@@ -24,6 +24,6 @@ Other functionalities:
 
 ![ends](https://user-images.githubusercontent.com/79231048/182836357-6b1ef033-e6b4-46a8-bc8d-b5249d2d77d1.PNG)
 
-Added minimal Front-End using angularm, which lists all the transactions, and enables categorization of a single transaction
+Added minimal Front-End using angular, which lists all the transactions, and enables categorization of a single transaction
 
 ![FE](https://user-images.githubusercontent.com/79231048/182836573-9f0f5391-e8ec-4d8d-a84d-91ad27547ba7.PNG)
