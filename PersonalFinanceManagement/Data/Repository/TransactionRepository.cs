@@ -147,6 +147,8 @@ namespace PersonalFinanceManagement.Data.Repository
                     return null;
                 }
 
+                if (transaction.Splits == null) transaction.Splits = new List<TransactionsSplit>();
+
                 Context.TransactionSplits.RemoveRange(transaction.Splits);
 
                 var categories = Context.Categories.Where(c => codes.Contains(c.Code));
@@ -180,7 +182,6 @@ namespace PersonalFinanceManagement.Data.Repository
                 return TransactionsFactory.ToDto(transaction);
 
             }
-
 
         }
 

@@ -12,8 +12,7 @@ namespace PersonalFinanceManagement.Mappers
             return new SplitsDto()
             {
                 Amount = split.Amount,
-                Category = split.Category,
-                Transaction = split.Transaction
+                Category = split.Category
             };
 
         }
